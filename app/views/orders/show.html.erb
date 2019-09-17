@@ -6,6 +6,31 @@
 
   <div class="order-summary jumbotron">
     <h4>Thank you for your order!</h4>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th colspan="2">Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @order.line_items.product.each do |item| %>
+      <%= render 'lineitem', product: Product.where("id = ?", item[0].product_id)[0], quantity: item[0].quantity %> 
+    <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="3">
+          TOTAL:
+        </th>
+        <th>
+          <%= humanized_money_with_symbol @order.total_cents / 100.0 %>
+        </th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
   </div>
 
   <%= link_to "Continue Shopping", root_path, class: 'btn btn-lg btn-primary' %>
